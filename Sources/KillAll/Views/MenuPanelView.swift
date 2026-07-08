@@ -4,7 +4,7 @@ import AppKit
 /// The popover panel shown from the menu-bar icon.
 struct MenuPanelView: View {
     @EnvironmentObject var monitor: ProcessMonitor
-    @State private var showKillAllConfirm = false
+    @State private var confirmingKillAll = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -15,6 +15,7 @@ struct MenuPanelView: View {
             footer
         }
         .frame(width: 400)
+        .onDisappear { confirmingKillAll = false }
     }
 
     private var header: some View {
@@ -25,22 +26,35 @@ struct MenuPanelView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
+            killAllControl
+        }
+        .padding(12)
+    }
+
+    /// Inline two-step confirm. A system `confirmationDialog` cannot be used here:
+    /// presenting it makes the menu-bar window resign key and hide, dropping the action.
+    @ViewBuilder
+    private var killAllControl: some View {
+        if confirmingKillAll {
+            HStack(spacing: 6) {
+                Button(role: .destructive) {
+                    monitor.killAll()
+                    confirmingKillAll = false
+                } label: {
+                    Text("确认杀 \(monitor.processes.count) 个")
+                }
+                Button("取消") { confirmingKillAll = false }
+                    .buttonStyle(.plain).foregroundStyle(.secondary)
+            }
+            .font(.callout)
+        } else {
             Button(role: .destructive) {
-                showKillAllConfirm = true
+                confirmingKillAll = true
             } label: {
                 Label("Kill All", systemImage: "xmark.octagon.fill")
             }
             .disabled(monitor.processes.isEmpty)
-            .confirmationDialog(
-                "杀掉全部 \(monitor.processes.count) 个开发进程（含其子进程）？",
-                isPresented: $showKillAllConfirm,
-                titleVisibility: .visible
-            ) {
-                Button("Kill All", role: .destructive) { monitor.killAll() }
-                Button("取消", role: .cancel) {}
-            }
         }
-        .padding(12)
     }
 
     @ViewBuilder
