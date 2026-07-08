@@ -12,7 +12,15 @@
 - 🧩 **GUI 助手开关**（底部勾选框，默认关）：打开后连 VS Code / Cursor / Electron 派生的 Node 助手进程一起显示，带 `app` 标记提示；设置持久化。
 - 🔄 每 3 秒自动刷新。
 
-## 构建 & 运行
+## 安装（Homebrew）
+```bash
+brew tap yangmuto/tap
+brew install --cask --no-quarantine killall
+```
+若提示 `untrusted tap`，先 `brew trust yangmuto/tap` 再装。
+装完打开 `KillAll`，菜单栏出现 ⚡ 图标。未签名分发，`--no-quarantine` 让它可直接打开。
+
+## 从源码构建 & 运行
 ```bash
 ./build_app.sh          # 编译并打包成 KillAll.app
 open ./KillAll.app      # 启动，菜单栏出现图标
