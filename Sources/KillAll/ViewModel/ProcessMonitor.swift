@@ -17,6 +17,18 @@ final class ProcessMonitor: ObservableObject {
     }
     private static let guiHelpersKey = "includeGUIHelpers"
 
+    /// Launch KillAll automatically at login. Reflects the real system state.
+    @Published var launchAtLogin: Bool {
+        didSet {
+            guard launchAtLogin != oldValue else { return }
+            if !LoginItem.setEnabled(launchAtLogin) {
+                // Registration failed — snap back to the real status.
+                launchAtLogin = LoginItem.isEnabled
+            }
+        }
+    }
+    private static let didInitLoginKey = "didInitLoginItem"
+
     /// Processes running at least this long are highlighted red. Change here to tune.
     let redThresholdSeconds = 3600            // 1 hour
     private let refreshInterval: TimeInterval = 3
@@ -29,6 +41,14 @@ final class ProcessMonitor: ObservableObject {
 
     init() {
         includeGUIHelpers = UserDefaults.standard.bool(forKey: Self.guiHelpersKey)
+
+        // First launch after install: opt into launch-at-login automatically.
+        if !UserDefaults.standard.bool(forKey: Self.didInitLoginKey) {
+            LoginItem.setEnabled(true)
+            UserDefaults.standard.set(true, forKey: Self.didInitLoginKey)
+        }
+        launchAtLogin = LoginItem.isEnabled
+
         refresh()
         start()
     }

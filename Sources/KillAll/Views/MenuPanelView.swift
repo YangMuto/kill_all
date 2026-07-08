@@ -100,26 +100,33 @@ struct MenuPanelView: View {
     }
 
     private var footer: some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 6) {
             Toggle("显示 GUI 应用 Node 助手", isOn: $monitor.includeGUIHelpers)
                 .toggleStyle(.checkbox)
                 .help("同时显示 VS Code / Cursor / Electron 等 GUI 应用派生的 Node 助手进程")
 
-            Spacer()
+            HStack {
+                Toggle("开机自动启动", isOn: $monitor.launchAtLogin)
+                    .toggleStyle(.checkbox)
+                    .help("登录时自动启动 KillAll（若被系统拦，去 系统设置 > 通用 > 登录项 允许）")
 
-            Button { monitor.refresh() } label: {
-                Image(systemName: "arrow.clockwise")
-            }
-            .buttonStyle(.plain).foregroundStyle(.secondary)
-            .help("刷新")
+                Spacer()
 
-            Button { NSApplication.shared.terminate(nil) } label: {
-                Image(systemName: "power")
+                Button { monitor.refresh() } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .buttonStyle(.plain).foregroundStyle(.secondary)
+                .help("刷新")
+
+                Button { NSApplication.shared.terminate(nil) } label: {
+                    Image(systemName: "power")
+                }
+                .buttonStyle(.plain).foregroundStyle(.secondary)
+                .help("退出 KillAll")
             }
-            .buttonStyle(.plain).foregroundStyle(.secondary)
-            .help("退出 KillAll")
         }
         .font(.caption)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
     }
