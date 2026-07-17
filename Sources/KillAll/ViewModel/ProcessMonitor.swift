@@ -43,7 +43,10 @@ final class ProcessMonitor: ObservableObject {
         includeGUIHelpers = UserDefaults.standard.bool(forKey: Self.guiHelpersKey)
 
         // First launch after install: opt into launch-at-login automatically.
-        if !UserDefaults.standard.bool(forKey: Self.didInitLoginKey) {
+        // Only for an app installed under /Applications — a dev build run from a
+        // build directory must not register a login item pointing at a throwaway path.
+        if !UserDefaults.standard.bool(forKey: Self.didInitLoginKey),
+           Bundle.main.bundlePath.hasPrefix("/Applications/") {
             LoginItem.setEnabled(true)
             UserDefaults.standard.set(true, forKey: Self.didInitLoginKey)
         }

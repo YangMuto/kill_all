@@ -16,10 +16,14 @@
 ## 安装（Homebrew）
 ```bash
 brew tap yangmuto/tap
-brew install --cask --no-quarantine killall
+brew install --cask killall
+xattr -dr com.apple.quarantine /Applications/KillAll.app   # 未签名，必须去隔离否则打不开
+open -a KillAll
 ```
-若提示 `untrusted tap`，先 `brew trust yangmuto/tap` 再装。
-装完打开 `KillAll`，菜单栏出现 ⚡ 图标。未签名分发，`--no-quarantine` 让它可直接打开。
+- 若提示 `untrusted tap` → 先 `brew trust yangmuto/tap` 再装。
+- 打开后菜单栏出现 ⚡ 图标；首次打开自动加入登录项（开机自启），面板底部可关。
+
+> Homebrew 6 已移除 `--no-quarantine` 参数，且安装时仍会加隔离属性，所以未签名的本 app 需手动执行上面的 `xattr` 一次。
 
 ## 从源码构建 & 运行
 ```bash

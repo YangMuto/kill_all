@@ -1,6 +1,6 @@
 cask "killall" do
-  version "1.0.2"
-  sha256 "469ac966117ed6d549e92c74a56826030ed8b42d9ee212f30dee77eb009da010"
+  version "1.0.3"
+  sha256 "dee20d8ada3d06efcb332980def48673246fb168a9a53a79fd85ee47fe61ff36"
 
   url "https://github.com/YangMuto/kill_all/releases/download/v#{version}/KillAll-#{version}.zip"
   name "KillAll"
@@ -9,12 +9,14 @@ cask "killall" do
 
   app "KillAll.app"
 
-  # 未签名分发：装完请去掉隔离属性再打开（或用 `--no-quarantine` 安装）
+  # 未签名分发：Homebrew 仍会加隔离属性，装完需去掉才能打开
   caveats <<~EOS
-    KillAll 未做 Apple 签名。若打开被拦，执行一次：
+    KillAll 未做 Apple 签名，装完请执行一次去隔离，否则打不开：
+
       xattr -dr com.apple.quarantine "/Applications/KillAll.app"
-    或安装时加 --no-quarantine：
-      brew install --cask --no-quarantine #{token}
+
+    然后打开： open -a KillAll
+    （首次打开会自动加入登录项，实现开机自启；面板底部可关。）
   EOS
 
   zap trash: [

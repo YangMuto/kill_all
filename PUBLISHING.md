@@ -41,10 +41,12 @@ gh repo create homebrew-tap --public --source=. --push
 ## 第 4 步：别人安装
 ```bash
 brew tap yangmuto/tap
-brew install --cask --no-quarantine killall
-# 若提示 untrusted tap： brew trust yangmuto/tap 后重试
+brew install --cask killall
+xattr -dr com.apple.quarantine /Applications/KillAll.app   # 未签名必须去隔离
 open -a KillAll
+# 若提示 untrusted tap： brew trust yangmuto/tap 后重试
 ```
+> Homebrew 6 移除了 `--no-quarantine`，且安装仍加隔离属性 → 未签名 app 必须手动 `xattr`。
 （`tap` 是仓库名 `homebrew-tap` 去掉前缀后的简称。新版 Homebrew 对第三方 tap 需先 `brew tap` + 可能 `brew trust`。）
 
 ---

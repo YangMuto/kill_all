@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:kill_all}",
+            "name": "Debug KillAll",
+            "target": "KillAll",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug KillAll"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:kill_all}",
+            "name": "Release KillAll",
+            "target": "KillAll",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release KillAll"
+        }
+    ]
+}
