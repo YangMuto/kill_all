@@ -10,7 +10,8 @@
 - 💀 **Kill / Kill All**：默认杀掉整棵进程树（父进程 + 所有子孙），先 `SIGTERM`，2 秒后仍存活升级 `SIGKILL`。真正释放资源，不留孤儿进程。
 - 📁 **来源目录**：每行显示进程的工作目录（`lsof` 取 cwd，`~` 缩写），一眼认出是哪个项目的残留进程。
 - 🧩 **GUI 助手开关**（底部勾选框，默认关）：打开后连 VS Code / Cursor / Electron 派生的 Node 助手进程一起显示，带 `app` 标记提示；设置持久化。
-- 🚀 **开机自动启动**（`SMAppService`，首次启动自动开启，底部可关）：登录即常驻。
+- 🚀 **开机自动启动**（LaunchAgent，装在 `/Applications` 时首次启动自动开启，面板底部可关）：登录即常驻。
+  用 LaunchAgent 而非 `SMAppService`——后者按代码签名认身份，本 app 为 ad-hoc 签名，每次升级签名都变会让登录项失效且无法从 app 内移除。
 - 🔄 每 3 秒自动刷新。
 
 ## 安装（Homebrew）

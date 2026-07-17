@@ -1,6 +1,6 @@
 cask "killall" do
-  version "1.0.3"
-  sha256 "dee20d8ada3d06efcb332980def48673246fb168a9a53a79fd85ee47fe61ff36"
+  version "1.0.4"
+  sha256 "2f8871217363272239ceebc96592aa72e247ba5207311d01e7dc2564f45a9588"
 
   url "https://github.com/YangMuto/kill_all/releases/download/v#{version}/KillAll-#{version}.zip"
   name "KillAll"
